@@ -6,34 +6,32 @@ import pytz
 import upwork
 from upwork.routers import workdiary
 
-from config import CLIENT_ID, CLIENT_SECRET, TOKEN
+from config import CLIENT_ID, CLIENT_SECRET, TOKEN, CONTRACT_ID
 
 
 class Upwork:
     def __init__(self):
-        # if running for the first time
-        # comment the TOKEN in config and get
-        # the token manually and store it.
-        config = upwork.Config({
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-            "redirect_uri": 'https://localhost',
-            'token': TOKEN
-        })
 
+        if TOKEN:
+            config_dict = {
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "redirect_uri": 'https://localhost',
+                'token': TOKEN
+            }
+        else:
+            config_dict = {
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "redirect_uri": 'https://localhost',
+            }
+
+        config = upwork.Config(config_dict)
         self.client = upwork.Client(config)
-        actual_token = self.client.get_actual_config().token
 
-        # update the refreshed token
-        with open('config.py', 'r') as f:
-            lines = f.readlines()
-        with open('config.py', 'w') as f:
-            lines[[i for i, line in enumerate(lines) if 'TOKEN' in line][0]] = f'TOKEN = {repr(actual_token)}'
-            f.writelines(lines)
         # For the first time, we need to get the token manually
-        # and then update it in the config.py
         try:
-            config.token
+            token = self.client.get_actual_config().token
         except AttributeError:
             authorization_url, state = self.client.get_authorization_url()
             # cover "state" flow if needed
@@ -50,6 +48,13 @@ class Upwork:
             # periodically to sync-up the data
             pprint(token)
             print("OK")
+
+        # update the refreshed token
+        with open('config.py', 'r') as f:
+            lines = f.readlines()
+        with open('config.py', 'w') as f:
+            lines[[i for i, line in enumerate(lines) if 'TOKEN' in line][0]] = f'TOKEN = {repr(token)}\n'
+            f.writelines(lines)
 
     def get_work_diary(self, date: datetime, contract_id: str):
         str_date = date.strftime('%Y%m%d')
@@ -76,5 +81,5 @@ class Upwork:
 
 if __name__ == "__main__":
     api = Upwork()
-    data = api.get_work_diary(datetime.datetime.now(), '31439064')
+    data = api.get_work_diary(datetime.datetime.now(), CONTRACT_ID)
     print(data)
