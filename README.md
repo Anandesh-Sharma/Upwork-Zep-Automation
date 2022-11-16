@@ -11,6 +11,7 @@ Created to reduce redundant efforts on logging time in zep. **Now we just need t
 1. Replace print statements with rotating loggers
 2. Add a monitor to watch, pereferrably I would use a telegram bot that keeps me posted incase something doesn't work.
 3. For fun, I want to create an alexa skill which will trigger the script on a voice command.
+4. Usually getting upwork api could take around 1 month, so I wanted to build an alternative *selenium* approach and connect it with rest of the script. I have built something on selenium but it seems not working and needs to rectified.
 
 ## How to utilize this project?
 
