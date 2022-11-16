@@ -4,10 +4,11 @@ CLIENT_SECRET = ''
 
 # token must be in single line
 TOKEN = None
+
 # contract_id
 CONTRACT_ID = ''
 
-# Zep creds
+# Zep creds should be in urlencoded form
 USERNAME = ''
 PASSWORD = ''
 
