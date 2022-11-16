@@ -126,7 +126,7 @@ if __name__ == "__main__":
     client = Zep()
 
     api = Upwork()
-    data = api.get_work_diary(datetime.datetime.now(), '31439064')
+    data = api.get_work_diary(datetime.datetime.now(), CONTRACT_ID)
     for i in data:
         print(i)
         result = client.post_time(i)
