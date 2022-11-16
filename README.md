@@ -25,6 +25,7 @@ Created to reduce redundant efforts on logging time in zep. **Now we just need t
 
 ### 3. Add config
 * Update all necessary config in `config.py`
+
     ```python
     # upwork creds
     CLIENT_ID = '<upwork client id>'
@@ -38,8 +39,14 @@ Created to reduce redundant efforts on logging time in zep. **Now we just need t
     PASSWORD = '<zep password urlencoded>'
 
     ```
+* If your timezone is other than India then change the `timezoneOffset` parameter value in `config.py`. For Eg, For India its **5.5**.
+
+  ```python
+  TIMEZONE_URL = 'https://www.zep-online.de/zeppstag/view/index.php?action=save&timezoneOffset=5.5'
+  ```
 ### 4. Execute `run.py`
 * By default this code will pick today's date, if you want to log hours for different day then just update here in `run.py`:
+
     ```python
     api = Upwork()
     data = api.get_work_diary(<custom datetime object here>, CONTRACT_ID)
