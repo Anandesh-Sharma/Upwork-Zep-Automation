@@ -3,7 +3,7 @@ Created to reduce redundant efforts on logging time in zep. **Now we just need t
 
 *Format on Upwork Time Tracker*
 ```json
-    {"memo": "working on xyz", "zep_id":1234}
+{"memo": "working on xyz", "zep_id":1234}
 ```
 
 
@@ -20,48 +20,45 @@ Created to reduce redundant efforts on logging time in zep. **Now we just need t
 * Get workdiary scope in your api and you will receive client_id and client_secret
 
 ### 2. Generate upwork token
-* For the first run you need to get the Token, which needs to be done manually. In order to do this just comment the token from config, it will automatically redirect you the authorization page. 
+* For the first run you need to get the Token, which needs to be done manually. In order to do this just comment the *token* from config in `workdiary.py`, it will automatically redirect you the authorization page. 
 
     ```python
-        config = upwork.Config({
-                    "client_id": CLIENT_ID,
-                    "client_secret": CLIENT_SECRET,
-                    "redirect_uri": 'https://localhost', # change it if you've different callback url
-                    # 'token': TOKEN
-                })
+    config = upwork.Config({
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "redirect_uri": 'https://localhost', # change it if you've different callback url
+                # 'token': TOKEN
+            })
     ```
 * Follow the instructions on the terminal, you will get a dictionary of token. Just paste that inside your `config.py` file.
     ```python 
-        TOKEN = <token dictionary> # should be in a single line
+    TOKEN = <token dictionary> # should be in a single line
     ```
 * Now uncomment the Token in `workdiary.py` config.
 
 ### 3. Add config
 * Update all necessary config in `config.py`
     ```python
-        CLIENT_ID = ''
-        CLIENT_SECRET = ''
-        
-        # token must be in single line
-        TOKEN = None
-        
-        # contract_id
-        CONTRACT_ID = ''
-        
-        # Zep creds should be in urlencoded form
-        USERNAME = ''
-        PASSWORD = ''
+    CLIENT_ID = ''
+    CLIENT_SECRET = ''
+    
+    # token must be in single line
+    TOKEN = None
+    
+    # contract_id
+    CONTRACT_ID = ''
+    
+    # Zep creds should be in urlencoded form
+    USERNAME = ''
+    PASSWORD = ''
     ```
 ### 4. Execute `run.py`
-* By default this code will pick today's date, if you want to log hours for different day then just update here:
+* By default this code will pick today's date, if you want to log hours for different day then just update here in `run.py`:
     ```python
-        api = Upwork()
-        data = api.get_work_diary(<custom datetime object here>, CONTRACT_ID)
-        for i in data:
-            result = client.post_time(i)
-            if not result:
-                print(f'!! Failed : {i}')
+    api = Upwork()
+    data = api.get_work_diary(<custom datetime object here>, CONTRACT_ID)
+    for i in data:
+        result = client.post_time(i)
+        if not result:
+            print(f'!! Failed : {i}')
     ```
-    
-
-
