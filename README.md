@@ -1,7 +1,7 @@
 # Upwork-Zep-Automation
 Created to reduce redundant efforts on logging time in zep. **Now we just need to care about memo in the upwork time tracker**. Update below format in UTT and keep it updated with **zep ticket** and the **task** you are doing.
 
-*Format on Upwork Time Tracker*
+*Format on Upwork Time Tracker Memo*
 ```json
 {"memo": "working on xyz", "zep_id":1234}
 ```
