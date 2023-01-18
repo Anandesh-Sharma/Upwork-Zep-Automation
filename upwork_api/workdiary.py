@@ -56,6 +56,34 @@ class Upwork:
             lines[[i for i, line in enumerate(lines) if 'TOKEN' in line][0]] = f'TOKEN = {repr(token)}\n'
             f.writelines(lines)
 
+    def create_time_blocks(self, data):
+        end_times = []
+        timeblocks = []
+        zep_ids = []
+        for i in data:
+            zep_id = i['zep_id']
+            start_time = i['start_time']
+            end_time = i['end_time']
+            if not end_times or end_times[-1] != start_time or zep_ids[-1] != zep_id:
+                end_times.append(end_time)
+                zep_ids.append(zep_id)
+                timeblocks.append(i)
+            else:
+                index = len(end_times) - 1
+                timeblocks[index]['end_time'] = i['end_time']
+                end_times[index] = end_time
+        
+        for i in timeblocks:
+            st = datetime.datetime.strptime(i['start_time'], '%H:%M')
+            et = datetime.datetime.strptime(i['end_time'], '%H:%M')
+            duration = et - st
+            i['duration'] = ':'.join(str(duration).split(':')[:2])
+        return timeblocks
+            
+
+        
+
+
     def get_work_diary(self, date: datetime, contract_id: str):
         str_date = date.strftime('%Y%m%d')
         diary = workdiary.Api(self.client).get_by_contract(contract=contract_id, date=str_date)
@@ -75,8 +103,8 @@ class Upwork:
             # add memo data to cell data
             cell_data.update(memo_data)
             diary_data.append(cell_data)
-
-        return diary_data
+        timeblocks = self.create_time_blocks(data=diary_data)
+        return timeblocks
 
 
 if __name__ == "__main__":

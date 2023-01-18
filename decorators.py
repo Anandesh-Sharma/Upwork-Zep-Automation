@@ -1,3 +1,6 @@
+import traceback
+
+
 def handle_login_failures(func):
     def wrapper(self):
         try:
@@ -52,6 +55,22 @@ def handle_payload_id_extraction(func):
 
         return False
 
+    return wrapper
+
+
+def handle_subticketid_failures(func):
+    def wrapper(self, ticket_id, occurrence_id):
+        try:
+            res_occurrence_id = func(self, ticket_id, occurrence_id)
+            if 'NULL' in res_occurrence_id:
+                print(f'!! Unable to extract the id for sub_ticket : {ticket_id}')
+                exit()
+            else:
+                return res_occurrence_id
+        except Exception as e:
+            print(f'!! Exception occurred at subticket id extraction step : {str(e)}')
+            print(traceback.print_exc())
+        return False
     return wrapper
 
 
