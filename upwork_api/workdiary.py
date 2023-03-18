@@ -104,6 +104,7 @@ class Upwork:
             cell_data.update(memo_data)
             diary_data.append(cell_data)
         timeblocks = self.create_time_blocks(data=diary_data)
+        print(timeblocks)
         return timeblocks
 
 
